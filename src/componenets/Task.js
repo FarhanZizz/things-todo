@@ -1,6 +1,8 @@
 import React from "react";
-
-const Task = () => {
+import { removeTodo, updateTodo } from "../redux/Action";
+import { useDispatch } from "react-redux";
+const Task = ({ todo }) => {
+  const dispatch = useDispatch();
   return (
     <div className="bg-[#473C33] text-white flex items-center rounded-lg p-3">
       <input
@@ -9,11 +11,14 @@ const Task = () => {
       />
       <div className="flex w-full justify-between items-center">
         <div className="">
-          <h1 className="text-md">Task NAme</h1>
+          <h1 className="text-md">{todo.title}</h1>
           <h1 className="text-sm">3.30pm 12/12/12</h1>
         </div>
         <div className="flex">
-          <button className="mr-2">
+          <button
+            onClick={() => dispatch(removeTodo(todo.id))}
+            className="mr-2"
+          >
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -77,7 +82,7 @@ const Task = () => {
                 </select>
                 <div className="flex justify-end mt-3">
                   <button className="btn bg-[#473c33] hover:bg-[#473c33] mr-1">
-                    Add Task
+                    Edit Task
                   </button>
                 </div>
               </div>

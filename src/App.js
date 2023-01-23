@@ -1,7 +1,22 @@
 import "./App.css";
 import Task from "./componenets/Task";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo } from "./redux/Action";
 
 function App() {
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+
+  function handleAddTodo(event) {
+    event.preventDefault();
+    const form = event.target;
+    const title = form.newtodotitle.value;
+    const status = form.newtodostatus.value;
+    dispatch(addTodo(title, status));
+    const modal = document.getElementById("add-task");
+    modal.checked = false; // will remove the modal
+  }
   return (
     <div className="text-[#FFFBAC] md:px-40 lg:px-72 px-5">
       <h1 className="text-5xl text-center font-bold mt-20 mb-10">
@@ -25,12 +40,13 @@ function App() {
               ✕
             </label>
             <h3 className="text-lg font-bold mb-4">ADD THINGS TODO</h3>
-            <div className="form-control w-full">
+            <form onSubmit={handleAddTodo} className="form-control w-full">
               <label className="label">
                 <span className="text-md font-medium">Title</span>
               </label>
               <input
                 type="text"
+                name="newtodotitle"
                 placeholder="Type here"
                 className="input input-bordered bg-transparent border-0 border-[#473C33] border-b-2 rounded-none placeholder:text-[#473C33] placeholder:text-xs  focus:outline-none"
               />
@@ -38,20 +54,23 @@ function App() {
                 <span className="text-md font-medium">Status</span>
               </label>
               <select
+                defaultValue="incomplete"
                 id="sort"
+                name="newtodostatus"
                 class="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
               >
-                <option selected value="incomplete">
-                  Incomplete
-                </option>
+                <option value="incomplete">Incomplete</option>
                 <option value="complete">Completed</option>
               </select>
               <div className="flex justify-end mt-3">
-                <button className="btn bg-[#473c33] hover:bg-[#473c33] mr-1">
+                <button
+                  type="submit"
+                  className="btn bg-[#473c33] hover:bg-[#473c33] mr-1"
+                >
                   Add Task
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
         <select
@@ -66,10 +85,14 @@ function App() {
         </select>
       </div>
       <div className="bg-[#FFFBAC] w-full p-4 mt-2 grid  gap-y-2 rounded-lg">
-        {/* <div className="badge badge-lg bg-[#473c33] w-max mx-auto  rounded-lg py-4">
-          No Things TODO
-        </div> */}
-        <Task></Task>
+        {!todos.length && (
+          <div className="badge badge-lg bg-[#473c33] w-max mx-auto  rounded-lg py-4">
+            No Things TODO
+          </div>
+        )}
+        {todos.map((todo) => (
+          <Task key={todo.id} todo={todo}></Task>
+        ))}
       </div>
     </div>
   );
