@@ -3,6 +3,14 @@ import { removeTodo, updateTodo } from "../redux/Action";
 import { useDispatch } from "react-redux";
 const Task = ({ todo }) => {
   const dispatch = useDispatch();
+
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const title = form.title.value;
+    const status = form.status.value;
+    dispatch(updateTodo(todo.id, title, status));
+  };
   return (
     <div className="bg-[#473C33] text-white flex items-center rounded-lg p-3">
       <input
@@ -12,7 +20,7 @@ const Task = ({ todo }) => {
       <div className="flex w-full justify-between items-center">
         <div className="">
           <h1 className="text-md">{todo.title}</h1>
-          <h1 className="text-sm">3.30pm 12/12/12</h1>
+          <h1 className="text-sm">{todo.time}</h1>
         </div>
         <div className="flex">
           <button
@@ -22,7 +30,7 @@ const Task = ({ todo }) => {
             <svg
               stroke="currentColor"
               fill="currentColor"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 24 24"
               height="1.5em"
               width="1.5em"
@@ -34,11 +42,11 @@ const Task = ({ todo }) => {
             <path fill="none" d="M0 0h24v24H0z"></path>
             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
           </button>
-          <label htmlFor="edit-task">
+          <label htmlFor={todo.id}>
             <svg
               stroke="currentColor"
               fill="currentColor"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 24 24"
               height="1.5em"
               width="1.5em"
@@ -49,22 +57,23 @@ const Task = ({ todo }) => {
             </svg>
           </label>
           {/* Put this part before </body> tag */}
-          <input type="checkbox" id="edit-task" className="modal-toggle" />
+          <input type="checkbox" id={todo.id} className="modal-toggle" />
           <div className="modal">
             <div className="modal-box relative bg-[#FFFBAC] text-[#473C33]">
               <label
-                htmlFor="edit-task"
+                htmlFor={todo.id}
                 className="btn btn-sm btn-circle bg-[#473C33] absolute right-2 top-2"
               >
                 ✕
               </label>
               <h3 className="text-lg font-bold mb-4">EDIT THINGS TODO</h3>
-              <div className="form-control w-full">
+              <form onSubmit={handleUpdate} className="form-control w-full">
                 <label className="label">
                   <span className="text-md font-medium">Title</span>
                 </label>
                 <input
                   type="text"
+                  name="title"
                   placeholder="Type here"
                   className="input input-bordered bg-transparent border-0 border-[#473C33] border-b-2 rounded-none placeholder:text-[#473C33] placeholder:text-xs  focus:outline-none"
                 />
@@ -73,19 +82,22 @@ const Task = ({ todo }) => {
                 </label>
                 <select
                   id="sort"
-                  class="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
+                  name="status"
+                  defaultValue={todo.status}
+                  className="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
                 >
-                  <option selected value="incomplete">
-                    Incomplete
-                  </option>
+                  <option value="incomplete">Incomplete</option>
                   <option value="complete">Completed</option>
                 </select>
                 <div className="flex justify-end mt-3">
-                  <button className="btn bg-[#473c33] hover:bg-[#473c33] mr-1">
+                  <button
+                    type="submit"
+                    className="btn bg-[#473c33] hover:bg-[#473c33] mr-1"
+                  >
                     Edit Task
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

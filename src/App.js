@@ -8,12 +8,18 @@ function App() {
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
+  const [selectedStatus, setSelectedStatus] = useState("all");
+
+  const handleChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
   function handleAddTodo(event) {
     event.preventDefault();
     const form = event.target;
     const title = form.newtodotitle.value;
     const status = form.newtodostatus.value;
     dispatch(addTodo(title, status));
+    form.reset();
     const modal = document.getElementById("add-task");
     modal.checked = false; // will remove the modal
   }
@@ -52,16 +58,15 @@ function App() {
               />
               <label className="label mt-4">
                 <span className="text-md font-medium">Status</span>
+                <select
+                  defaultValue="incomplete"
+                  name="newtodostatus"
+                  className="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
+                >
+                  <option value="incomplete">Incomplete</option>
+                  <option value="complete">Completed</option>
+                </select>
               </label>
-              <select
-                defaultValue="incomplete"
-                id="sort"
-                name="newtodostatus"
-                class="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
-              >
-                <option value="incomplete">Incomplete</option>
-                <option value="complete">Completed</option>
-              </select>
               <div className="flex justify-end mt-3">
                 <button
                   type="submit"
@@ -74,12 +79,11 @@ function App() {
           </div>
         </div>
         <select
-          id="sort"
-          class="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
+          onChange={handleChange}
+          defaultValue={selectedStatus}
+          className="bg-[#FFFBAC] p-2.5 font-semibold text-[#473C33] rounded-lg"
         >
-          <option selected value="all">
-            All
-          </option>
+          <option value="all">All</option>
           <option value="incomplete">Incomplete</option>
           <option value="complete">Completed</option>
         </select>
@@ -90,9 +94,12 @@ function App() {
             No Things TODO
           </div>
         )}
-        {todos.map((todo) => (
-          <Task key={todo.id} todo={todo}></Task>
-        ))}
+        {todos.map((todo) => {
+          if (selectedStatus === todo.status || selectedStatus === "all") {
+            return <Task todo={todo} key={todo.id}></Task>;
+          }
+          return null;
+        })}
       </div>
     </div>
   );

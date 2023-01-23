@@ -13,7 +13,12 @@ function todoApp(state = initialState, action) {
         ...state,
         todos: [
           ...state.todos,
-          { id: action.id, title: action.title, status: action.status },
+          {
+            id: action.id,
+            title: action.title,
+            status: action.status,
+            time: action.time,
+          },
         ],
       };
     case REMOVE_TODO:
@@ -25,7 +30,9 @@ function todoApp(state = initialState, action) {
       return {
         ...state,
         todos: state.todos.map((todo) =>
-          todo.id === action.id ? { ...todo, status: action.status } : todo
+          todo.id === action.id
+            ? { ...todo, status: action.status, title: action.title }
+            : todo
         ),
       };
     default:

@@ -12,6 +12,7 @@ export function addTodo(title, status) {
     id: nextTodoId++,
     title,
     status,
+    time: new Date().toLocaleString(),
   };
 }
 
@@ -22,10 +23,11 @@ export function removeTodo(id) {
   };
 }
 
-export function updateTodo(id, status) {
+export function updateTodo(id, title, status) {
   return {
     type: UPDATE_TODO,
     id,
+    title,
     status,
   };
 }
