@@ -10,16 +10,34 @@ const Task = ({ todo }) => {
     const title = form.title.value;
     const status = form.status.value;
     dispatch(updateTodo(todo.id, title, status));
+    form.reset();
+    const modal = document.getElementById(`${todo.id}`);
+    modal.checked = false; // will remove the modal
+  };
+  const handleCheck = () => {
+    const check = document.getElementById("check").checked;
+    let status;
+    if (check) {
+      status = "complete";
+    } else {
+      status = "incomplete";
+    }
+    dispatch(updateTodo(todo.id, todo.title, status));
   };
   return (
     <div className="bg-[#473C33] text-white flex items-center rounded-lg p-3">
       <input
         type="checkbox"
+        id="check"
+        checked={todo.status === "complete"}
+        onChange={handleCheck}
         className="accent-lime-300 rounded-lg checkbox-md mr-3"
       />
       <div className="flex w-full justify-between items-center">
         <div className="">
-          <h1 className="text-md">{todo.title}</h1>
+          <h1 className={`${todo.status === "complete" && "line-through"} `}>
+            {todo.title}
+          </h1>
           <h1 className="text-sm">{todo.time}</h1>
         </div>
         <div className="flex">
@@ -74,8 +92,10 @@ const Task = ({ todo }) => {
                 <input
                   type="text"
                   name="title"
+                  required
+                  defaultValue={todo.title}
                   placeholder="Type here"
-                  className="input input-bordered bg-transparent border-0 border-[#473C33] border-b-2 rounded-none placeholder:text-[#473C33] placeholder:text-xs  focus:outline-none"
+                  className="input  input-bordered bg-transparent border-0 border-[#473C33] border-b-2 rounded-none placeholder:text-[#473C33] placeholder:text-xs  focus:outline-none"
                 />
                 <label className="label mt-4">
                   <span className="text-md font-medium">Status</span>

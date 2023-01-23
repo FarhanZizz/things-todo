@@ -53,6 +53,7 @@ function App() {
               <input
                 type="text"
                 name="newtodotitle"
+                required
                 placeholder="Type here"
                 className="input input-bordered bg-transparent border-0 border-[#473C33] border-b-2 rounded-none placeholder:text-[#473C33] placeholder:text-xs  focus:outline-none"
               />
