@@ -25,7 +25,7 @@ function App() {
   }
   return (
     <div className="text-[#FFFBAC] md:px-40 lg:px-72 px-5">
-      <h1 className="text-5xl text-center font-bold mt-20 mb-10">
+      <h1 className="text-5xl animate__animated animate__jackInTheBox text-center font-bold mt-20 mb-10">
         THINGS <span className="text-[#473C33]">TODO</span>
       </h1>
       <div className="flex justify-between items-center">
