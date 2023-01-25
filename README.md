@@ -1,4 +1,4 @@
-# Live Site - https://tododler-96c20.web.app
+# Live Site - https://things-todo1.netlify.com/
 
 ![Screenshot](demo_screenshot.png)
 
