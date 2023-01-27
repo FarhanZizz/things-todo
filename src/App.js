@@ -90,17 +90,20 @@ function App() {
         </select>
       </div>
       <div className="bg-[#FFFBAC] w-full p-4 mt-2 grid  gap-y-2 rounded-lg">
-        {!todos.length && (
+        {todos.filter(
+          (todo) => todo.status === selectedStatus || selectedStatus === "all"
+        ).length === 0 ? (
           <div className="badge badge-lg bg-[#473c33] w-max mx-auto  rounded-lg py-4">
-            No Things TODO
+            No Todos
           </div>
+        ) : (
+          todos
+            .filter(
+              (todo) =>
+                todo.status === selectedStatus || selectedStatus === "all"
+            )
+            .map((todo) => <Task todo={todo} key={todo.id} />)
         )}
-        {todos.map((todo) => {
-          if (selectedStatus === todo.status || selectedStatus === "all") {
-            return <Task todo={todo} key={todo.id}></Task>;
-          }
-          return null;
-        })}
       </div>
     </div>
   );
